@@ -1,0 +1,11 @@
+{
+  "name": "com.bosco.texpotter",
+  "version": "1.0.0",
+  "displayName": "TexPotter",
+  "description": "This tool will resize texture canvas to match with the closest POT size.\nYou can run this tool by selected multiple images simultaneously and also by selecting entire folder.",
+  "author": {
+    "name": "Bosco",
+    "email": "dmellobosco17@gmail.com"
+  },
+  "type": "tool"
+}

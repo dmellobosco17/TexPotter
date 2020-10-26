@@ -19,7 +19,7 @@ namespace Editor.ImageProcessing
             for (int i = 0; i < objects.Length; i++)
             {
                 string path = AssetDatabase.GetAssetPath(objects[i]);
-                // Debug.Log(path);
+                Debug.Log(path);
                 list[i] = path;
                 listText += "\t" + path + "\n\n";
             }
@@ -51,19 +51,22 @@ namespace Editor.ImageProcessing
             int width = GetNearestPOTSize(texture.width);
             int height = GetNearestPOTSize(texture.height);
 
-            file = file.Replace("Assets/", "/");
+            if (file.StartsWith("Assets/"))
+                file = file.Substring("Assets".Length);
             file = Application.dataPath + file;
 
             // Use ProcessStartInfo class
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.CreateNoWindow = true;
             startInfo.UseShellExecute = false;
-            startInfo.FileName = Application.dataPath + "/Editor/ImageProcessing/ImageMagick/convert.exe";
+            string packagePath = Path.GetFullPath("Packages/com.bosco.texpotter").Replace('\\','/');
+            startInfo.FileName = packagePath + "/Editor/ImageMagick/convert.exe";
+            Debug.Log	("Converter path : "+startInfo.FileName);
             startInfo.WindowStyle = ProcessWindowStyle.Hidden;
             startInfo.Arguments = $"\"{file}\" -background transparent -gravity center -extent {width}x{height} \"{file}\"";
-
-            // Debug.Log(startInfo.FileName);
-            // Debug.Log(startInfo.Arguments);
+            //Process.Start(startInfo);
+            Debug.Log(startInfo.FileName);
+            Debug.Log(startInfo.Arguments);
 
             try
             {
@@ -77,9 +80,9 @@ namespace Editor.ImageProcessing
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
-                // Log error.
+                Debug.LogException(e);
             }
         }
 
@@ -92,7 +95,6 @@ namespace Editor.ImageProcessing
 
                 pot *= 2;
             }
-
             return pot;
         }
     }
